@@ -28,7 +28,7 @@ public class playerAnimations : MonoBehaviour
 
         if (!playerState)
         {
-            playerState = GetComponent<PlayerState>();
+            playerState = PlayerState.Instance;
         }
     }
 

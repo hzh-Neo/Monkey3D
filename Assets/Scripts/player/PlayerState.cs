@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class PlayerState : MonoBehaviour
 {
+    public static PlayerState Instance;
     public UnityEvent<float> airYE;
     public UnityEvent<bool> isGroundE;
 
@@ -22,7 +23,7 @@ public class PlayerState : MonoBehaviour
             airYE.Invoke(airY);
         }
     }
-    private bool _isGround;
+    private bool _isGround = true;
     public bool isGround
     {
         get
@@ -33,6 +34,15 @@ public class PlayerState : MonoBehaviour
         {
             _isGround = value;
             isGroundE.Invoke(value);
+        }
+    }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+
         }
     }
 }

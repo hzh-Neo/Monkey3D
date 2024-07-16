@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class checkGround : MonoBehaviour
 {
-    public PlayerState playerState;
     public bool isGrounded;
     public float groundDistance = 0.4f;
     public CapsuleCollider cb;
@@ -14,6 +13,10 @@ public class checkGround : MonoBehaviour
         Ray ray = new Ray(cb.transform.position, Vector3.down);
         RaycastHit hit;
         isGrounded = Physics.Raycast(ray, out hit, groundDistance);
-        playerState.isGround = isGrounded;
+        if (PlayerState.Instance.isGround != isGrounded)
+        {
+            PlayerState.Instance.isGround = isGrounded;
+        }
+
     }
 }

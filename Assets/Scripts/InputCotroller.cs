@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,14 +6,23 @@ using UnityEngine.InputSystem;
 
 public class InputCotroller : MonoBehaviour
 {
-    PlayerInputActions inputActions;
+    private PlayerInputActions inputActions;
+
+    public event EventHandler onInteraceEvent;
 
     private void Awake()
     {
         inputActions = new PlayerInputActions();
         inputActions.Enable();
+        inputActions.Player.interace.performed += Interace_performed;
     }
-    public Vector3 getMoveVector(float speed)
+
+    private void Interace_performed(InputAction.CallbackContext obj)
+    {
+        onInteraceEvent?.Invoke(this, EventArgs.Empty);
+    }
+
+    public Vector3 getMoveVector()
     {
         Vector2 move = inputActions.Player.Move.ReadValue<Vector2>();
         Vector3 newVelocity = Vector3.zero;
@@ -20,8 +30,9 @@ public class InputCotroller : MonoBehaviour
         {
             newVelocity = new Vector3(move.x, 0, move.y);
         }
-        return newVelocity * speed * Time.deltaTime;
+        return newVelocity;
     }
+
 
     public bool isJump()
     {

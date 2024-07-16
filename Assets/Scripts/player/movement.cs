@@ -1,57 +1,170 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
 
+
+
 public class PlayerMovement : MonoBehaviour
 {
+    public static PlayerMovement Instance { get; private set; }
+    public class SelectCounter : EventArgs
+    {
+        public clearCounter CC;
+    }
+    public event EventHandler<SelectCounter> onSelectChange;
     public Rigidbody body;
     public float speed = 10f;
     public float gravity = -9.81f * 2;
     public float jumpHeight = 3f;
 
+    public float interaceDis = 2;
+
+    public CapsuleCollider capsuleCollider;
+
+    public LayerMask CountersLayerMask;
+
     [SerializeField]
     private float rotateSpeed = 30f;
 
     [SerializeField]
-    private PlayerState playerState;
-
-    [SerializeField]
     private InputCotroller inputCotroller;
 
-    private Vector3 velocity;
-
-    private void Awake()
+    private clearCounter _selectCC;
+    private clearCounter selectCC
     {
-        if (!playerState)
+        get
         {
-            playerState = GetComponent<PlayerState>();
+            return _selectCC;
+        }
+        set
+        {
+            _selectCC = value;
+            onSelectChange?.Invoke(this, new SelectCounter() { CC = value });
         }
     }
 
-    void Update()
-    {
 
-        Vector3 newMove = inputCotroller.getMoveVector(speed);
-        if (playerState.isGround && inputCotroller.isJump())
+    private void Awake()
+    {
+        if (!capsuleCollider)
+        {
+            capsuleCollider = GetComponentInChildren<CapsuleCollider>();
+        }
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        inputCotroller.onInteraceEvent += InputCotroller_onInteraceEvent; ;
+    }
+
+    private void InputCotroller_onInteraceEvent(object sender, EventArgs e)
+    {
+        if (selectCC != null)
+        {
+            selectCC.interace();
+        }
+    }
+
+    private void listenMove()
+    {
+        Vector3 newMove = inputCotroller.getMoveVector();
+        if (PlayerState.Instance.isGround && inputCotroller.isJump())
         {
             Vector3 jumpVector = new Vector3(0, Mathf.Sqrt(jumpHeight * -2f * gravity), 0);
             body.velocity = jumpVector;
         }
+        PlayerState.Instance.isWalking = false;
         if (newMove.x != 0 || newMove.z != 0)
         {
             body.transform.forward = Vector3.Slerp(body.transform.forward, newMove, rotateSpeed * Time.deltaTime);
-            body.position += newMove;
+            bool isGuad = Physics.CapsuleCast(body.transform.position, body.transform.position + Vector3.up * capsuleCollider.height,
+                capsuleCollider.radius, newMove, speed * Time.deltaTime);
+            if (isGuad)
+            {
+                Vector3 canMoveX = new Vector3(newMove.x, 0, 0).normalized;
+                isGuad = Physics.CapsuleCast(body.transform.position, body.transform.position + Vector3.up * capsuleCollider.height,
+                    capsuleCollider.radius, canMoveX, speed * Time.deltaTime);
+                if (isGuad)
+                {
+                    Vector3 canMoveZ = new Vector3(0, 0, newMove.z).normalized;
+                    isGuad = Physics.CapsuleCast(body.transform.position, body.transform.position + Vector3.up * capsuleCollider.height,
+                        capsuleCollider.radius, canMoveZ, speed * Time.deltaTime);
+                    if (!isGuad)
+                    {
+                        newMove = canMoveZ;
+                    }
+                    else
+                    {
+                        newMove = Vector3.zero;
+                    }
+                }
+                else
+                {
+                    newMove = canMoveX;
+                }
+            }
+
+            if (!isGuad)
+            {
+
+                body.transform.position += newMove * speed * Time.deltaTime;
+                PlayerState.Instance.isWalking = newMove != Vector3.zero;
+            }
+
         }
-        playerState.isWalking = newMove != Vector3.zero;
+
 
 
         // 应用重力
-        if (!playerState.isGround)
+        if (!PlayerState.Instance.isGround)
         {
-            playerState.airY = body.velocity.y;
+            PlayerState.Instance.airY = body.velocity.y;
             body.velocity += Vector3.up * gravity * Time.deltaTime;
         }
+    }
 
+    private void listenInterace()
+    {
+        RaycastHit raycastHit = new();
+        Vector3[] directions = { body.transform.forward, body.transform.right, -body.transform.right };
+        bool hit = false;
+
+        foreach (Vector3 direction in directions)
+        {
+            if (Physics.Raycast(body.transform.position, direction, out raycastHit, interaceDis, CountersLayerMask))
+            {
+                hit = true;
+                break;
+            }
+        }
+
+        if (hit)
+        {
+            if (raycastHit.transform.TryGetComponent<clearCounter>(out clearCounter cc))
+            {
+                if (selectCC == null || selectCC != cc)
+                {
+                    selectCC = cc;
+                }
+
+            }
+            else
+            {
+                selectCC = null;
+            }
+        }
+        else
+        {
+            selectCC = null;
+        }
+
+    }
+
+    void Update()
+    {
+        listenMove();
+        listenInterace();
     }
 }
