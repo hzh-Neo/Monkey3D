@@ -6,12 +6,18 @@ using UnityEngine;
 
 
 
-public class PlayerMovement : MonoBehaviour
+public class Player : MonoBehaviour, IKitchenObjectParent
 {
-    public static PlayerMovement Instance { get; private set; }
+    public static Player Instance { get; private set; }
+
+
+    [SerializeField] private Transform itemPosition;
+
+    private KitchenItem kitchenItem;
+
     public class SelectCounter : EventArgs
     {
-        public clearCounter CC;
+        public BaseCounter CC;
     }
     public event EventHandler<SelectCounter> onSelectChange;
     public Rigidbody body;
@@ -31,8 +37,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private InputCotroller inputCotroller;
 
-    private clearCounter _selectCC;
-    private clearCounter selectCC
+    private BaseCounter _selectCC;
+    private BaseCounter selectCC
     {
         get
         {
@@ -63,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (selectCC != null)
         {
-            selectCC.interace();
+            selectCC.interace(this);
         }
     }
 
@@ -142,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (hit)
         {
-            if (raycastHit.transform.TryGetComponent<clearCounter>(out clearCounter cc))
+            if (raycastHit.transform.TryGetComponent<BaseCounter>(out BaseCounter cc))
             {
                 if (selectCC == null || selectCC != cc)
                 {
@@ -166,5 +172,30 @@ public class PlayerMovement : MonoBehaviour
     {
         listenMove();
         listenInterace();
+    }
+
+    public void ClearItem()
+    {
+        kitchenItem = null;
+    }
+
+    public Transform getTransform()
+    {
+        return itemPosition;
+    }
+
+    public bool HasItem()
+    {
+        return kitchenItem != null;
+    }
+
+    public KitchenItem getItem()
+    {
+        return kitchenItem;
+    }
+
+    public void setItem(KitchenItem item)
+    {
+        kitchenItem = item;
     }
 }

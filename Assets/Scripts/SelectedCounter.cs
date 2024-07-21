@@ -6,7 +6,7 @@ using UnityEngine;
 public class SelectedCounter : MonoBehaviour
 {
 
-    public clearCounter selectCC;
+    public BaseCounter selectCC;
 
     public GameObject selected;
 
@@ -14,10 +14,10 @@ public class SelectedCounter : MonoBehaviour
 
     private void Start()
     {
-        PlayerMovement.Instance.onSelectChange += Instance_onSelectChange;
+        Player.Instance.onSelectChange += Instance_onSelectChange;
     }
 
-    private void Instance_onSelectChange(object sender, PlayerMovement.SelectCounter e)
+    private void Instance_onSelectChange(object sender, Player.SelectCounter e)
     {
         if (selectCC == e.CC)
         {

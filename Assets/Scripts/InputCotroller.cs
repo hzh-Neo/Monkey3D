@@ -10,6 +10,7 @@ public class InputCotroller : MonoBehaviour
 
     public event EventHandler onInteraceEvent;
 
+
     private void Awake()
     {
         inputActions = new PlayerInputActions();
