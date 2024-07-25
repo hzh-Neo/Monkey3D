@@ -5,9 +5,6 @@ using UnityEngine;
 public class clearCounter : BaseCounter, IKitchenObjectParent
 {
     [SerializeField] private KitchenObject something;
-    [SerializeField] private Transform TopPosition;
-
-    private KitchenItem kitchenItem;
 
     public override void interace(Player player)
     {
@@ -26,15 +23,6 @@ public class clearCounter : BaseCounter, IKitchenObjectParent
                 setItem(player.getItem());
                 player.getItem().setClearCounter(this);
             }
-            else
-            {
-                Transform trans = Instantiate(something.prefab, TopPosition);
-                if (trans.TryGetComponent<KitchenItem>(out kitchenItem))
-                {
-                    setItem(kitchenItem);
-                    kitchenItem.setClearCounter(this);
-                }
-            }
         }
     }
 
@@ -42,34 +30,6 @@ public class clearCounter : BaseCounter, IKitchenObjectParent
     {
 
     }
-    /*******************************************************************************/
-
-    public void ClearItem()
-    {
-        kitchenItem = null;
-    }
-
-    public Transform getTransform()
-    {
-        return TopPosition;
-    }
-
-    public bool HasItem()
-    {
-        return kitchenItem != null;
-    }
-
-    public KitchenItem getItem()
-    {
-        return kitchenItem;
-    }
-
-    public void setItem(KitchenItem item)
-    {
-        kitchenItem = item;
-    }
-
-    /*******************************************************************************/
 
     public void setKitchenObj(KitchenObject _kitchenObject)
     {
@@ -91,4 +51,7 @@ public class clearCounter : BaseCounter, IKitchenObjectParent
         something = null;
     }
 
+    public override CounterType getCounterType() { 
+        return CounterType.clearCounter; 
+    }
 }

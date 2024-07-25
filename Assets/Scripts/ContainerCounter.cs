@@ -1,65 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ContainerCounter : BaseCounter, IKitchenObjectParent
 {
+    public event EventHandler interaceEvent;
     [SerializeField] private KitchenObject something;
-    [SerializeField] private Transform TopPosition;
-
-    private KitchenItem kitchenItem;
 
     public override void interace(Player player)
     {
-        if (HasItem())
+        if (!player.HasItem())
         {
-            if (!player.HasItem())
+            Transform trans = Instantiate(something.prefab, TopPosition);
+            if (trans.TryGetComponent<KitchenItem>(out kitchenItem))
             {
-                player.setItem(getItem());
-                getItem().setClearCounter(Player.Instance);
-            }
-        }
-        else
-        {
-            if (player.HasItem())
-            {
-                setItem(player.getItem());
-                player.getItem().setClearCounter(this);
-            }
-            else
-            {
-                Transform trans = Instantiate(something.prefab, TopPosition);
-                if (trans.TryGetComponent<KitchenItem>(out kitchenItem))
-                {
-                    setItem(kitchenItem);
-                    kitchenItem.setClearCounter(this);
-                }
+                player.setItem(kitchenItem);
+                kitchenItem.setClearCounter(Player.Instance);
+                interaceEvent?.Invoke(this, EventArgs.Empty);
             }
         }
     }
 
-    public void ClearItem()
+    public override CounterType getCounterType()
     {
-        kitchenItem = null;
-    }
-
-    public Transform getTransform()
-    {
-        return TopPosition;
-    }
-
-    public bool HasItem()
-    {
-        return kitchenItem != null;
-    }
-
-    public KitchenItem getItem()
-    {
-        return kitchenItem;
-    }
-
-    public void setItem(KitchenItem item)
-    {
-        kitchenItem = item;
+        return CounterType.contaionCounter;
     }
 }

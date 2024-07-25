@@ -70,6 +70,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
         if (selectCC != null)
         {
             selectCC.interace(this);
+            selectCC = null;
         }
     }
 
@@ -152,9 +153,33 @@ public class Player : MonoBehaviour, IKitchenObjectParent
             {
                 if (selectCC == null || selectCC != cc)
                 {
-                    selectCC = cc;
-                }
+                    if (Player.Instance.HasItem())
+                    {
+                        if (cc.getCounterType() == CounterType.clearCounter)
+                        {
+                            if (!cc.HasItem())
+                            {
+                                selectCC = cc;
+                            }
 
+                        }
+                        else
+                        {
+                            selectCC = null;
+                        }
+                    }
+                    else
+                    {
+                        if (cc.getCounterType() == CounterType.contaionCounter)
+                        {
+                            selectCC = cc;
+                        }
+                        else if (cc.getCounterType() == CounterType.clearCounter && cc.HasItem())
+                        {
+                            selectCC = cc;
+                        }
+                    }
+                }
             }
             else
             {
