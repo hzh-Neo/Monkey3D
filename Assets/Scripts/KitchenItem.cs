@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class KitchenItem : MonoBehaviour
@@ -34,5 +35,25 @@ public class KitchenItem : MonoBehaviour
     public bool HasItem()
     {
         return kitchenObject != null;
+    }
+
+    public KitchenObject getItem()
+    {
+        return kitchenObject;
+    }
+
+    public KitchenObject getItemSlice()
+    {
+        return kitchenObject.prefabSlice;
+    }
+
+    public bool IsSlice()
+    {
+        return kitchenObject.prefabSlice == null || kitchenObject.isSlice;
+    }
+
+    public void Destory()
+    {
+        GameObject.Destroy(gameObject);
     }
 }

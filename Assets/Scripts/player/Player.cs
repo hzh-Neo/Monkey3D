@@ -11,7 +11,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
     public static Player Instance { get; private set; }
 
 
-    [SerializeField] private Transform itemPosition;
+    [SerializeField] public Transform itemPosition;
 
     private KitchenItem kitchenItem;
 
@@ -153,7 +153,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
             {
                 if (selectCC == null || selectCC != cc)
                 {
-                    if (Player.Instance.HasItem())
+                    if (HasItem())
                     {
                         if (cc.getCounterType() == CounterType.clearCounter)
                         {
@@ -162,6 +162,17 @@ public class Player : MonoBehaviour, IKitchenObjectParent
                                 selectCC = cc;
                             }
 
+                        }
+                        else if (cc.getCounterType() == CounterType.cuttingCounter)
+                        {
+                            if (!getItem().IsSlice())
+                            {
+                                selectCC = cc;
+                            }
+                            else
+                            {
+                                selectCC = null;
+                            }
                         }
                         else
                         {
@@ -175,6 +186,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent
                             selectCC = cc;
                         }
                         else if (cc.getCounterType() == CounterType.clearCounter && cc.HasItem())
+                        {
+                            selectCC = cc;
+                        }
+                        else if (cc.getCounterType() == CounterType.cuttingCounter && cc.HasItem())
                         {
                             selectCC = cc;
                         }

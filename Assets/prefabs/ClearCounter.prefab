@@ -218,10 +218,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: ClearCounter
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 961650713959180194, guid: 7f05b057d2e412144acb9c73eb4ce419, type: 3}
     m_RemovedGameObjects:
     - {fileID: 3366256350718835300, guid: 7f05b057d2e412144acb9c73eb4ce419, type: 3}
     - {fileID: 879346546851613104, guid: 7f05b057d2e412144acb9c73eb4ce419, type: 3}
+    - {fileID: 3960107609606893051, guid: 7f05b057d2e412144acb9c73eb4ce419, type: 3}
+    - {fileID: 5506639636293942935, guid: 7f05b057d2e412144acb9c73eb4ce419, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3574071898776797022, guid: 7f05b057d2e412144acb9c73eb4ce419, type: 3}
       insertIndex: 0

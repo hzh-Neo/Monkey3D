@@ -56,8 +56,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ContainerCounter
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedComponents:
+    - {fileID: 961650713959180194, guid: 7f05b057d2e412144acb9c73eb4ce419, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 3960107609606893051, guid: 7f05b057d2e412144acb9c73eb4ce419, type: 3}
+    - {fileID: 5506639636293942935, guid: 7f05b057d2e412144acb9c73eb4ce419, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 9018806049290738438, guid: 7f05b057d2e412144acb9c73eb4ce419, type: 3}
@@ -81,6 +84,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9452ed8f5b7103c468ca074bb95b4d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TopPosition: {fileID: 0}
+  something: {fileID: 0}
 --- !u!1 &5942815014439468591 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 879346546851613104, guid: 7f05b057d2e412144acb9c73eb4ce419, type: 3}

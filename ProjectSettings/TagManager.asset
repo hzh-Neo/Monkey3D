@@ -12,7 +12,7 @@ TagManager:
   - Water
   - UI
   - Counters
-  - 
+  - player
   - 
   - 
   - 
@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: player
+    uniqueID: 3498373489
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
