@@ -7,6 +7,7 @@ public enum CounterType
     clearCounter,
     contaionCounter,
     cuttingCounter,
+    trashCounter,
     NoSet
 }
 

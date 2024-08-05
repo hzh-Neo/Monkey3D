@@ -10,4 +10,5 @@ public class KitchenObject : ScriptableObject
     public Sprite sprite;
     public string itemName;
     public bool isSlice;
+    public Color color;
 }

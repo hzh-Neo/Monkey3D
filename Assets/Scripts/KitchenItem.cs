@@ -16,6 +16,11 @@ public class KitchenItem : MonoBehaviour
             CC.ClearItem();
             removeCounter();
         }
+        if (clearCounter == null)
+        {
+            transform.SetParent(null);
+            return;
+        }
         CC = clearCounter;
         transform.parent = clearCounter.getTransform();
         transform.localPosition = Vector3.zero;
@@ -50,6 +55,16 @@ public class KitchenItem : MonoBehaviour
     public bool IsSlice()
     {
         return kitchenObject.prefabSlice == null || kitchenObject.isSlice;
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
     }
 
     public void Destory()

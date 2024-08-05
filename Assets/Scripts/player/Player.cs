@@ -149,12 +149,14 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
         if (hit)
         {
+    
             if (raycastHit.transform.TryGetComponent<BaseCounter>(out BaseCounter cc))
             {
                 if (selectCC == null || selectCC != cc)
                 {
                     if (HasItem())
                     {
+                      
                         if (cc.getCounterType() == CounterType.clearCounter)
                         {
                             if (!cc.HasItem())
@@ -165,7 +167,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
                         }
                         else if (cc.getCounterType() == CounterType.cuttingCounter)
                         {
-                            if (!getItem().IsSlice())
+                            if (!getItem().IsSlice() && !cc.HasItem())
                             {
                                 selectCC = cc;
                             }
@@ -173,6 +175,9 @@ public class Player : MonoBehaviour, IKitchenObjectParent
                             {
                                 selectCC = null;
                             }
+                        }else if (cc.getCounterType() == CounterType.trashCounter)
+                        {
+                            selectCC = cc;
                         }
                         else
                         {
@@ -192,6 +197,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent
                         else if (cc.getCounterType() == CounterType.cuttingCounter && cc.HasItem())
                         {
                             selectCC = cc;
+                        }
+                        else
+                        {
+                            selectCC = null;
                         }
                     }
                 }

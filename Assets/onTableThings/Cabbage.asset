@@ -16,3 +16,5 @@ MonoBehaviour:
   prefabSlice: {fileID: 11400000, guid: 3e3a83561d1ccdc4b93aa9c5f628ad0f, type: 2}
   sprite: {fileID: 21300000, guid: e1c23b5aded59d84da30738d3267a6c9, type: 3}
   itemName: "\u751F\u83DC"
+  isSlice: 0
+  color: {r: 0.5176471, g: 0.6117647, b: 0, a: 1}
