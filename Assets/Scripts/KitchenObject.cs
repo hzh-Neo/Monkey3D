@@ -11,4 +11,5 @@ public class KitchenObject : ScriptableObject
     public string itemName;
     public bool isSlice;
     public Color color;
+    public bool isCook;
 }

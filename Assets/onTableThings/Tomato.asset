@@ -16,5 +16,6 @@ MonoBehaviour:
   prefabSlice: {fileID: 11400000, guid: 2376aee46d462e14a8b89b0b8f47b833, type: 2}
   sprite: {fileID: 21300000, guid: 91e8fe3de9249fc44b7bdd8050062896, type: 3}
   itemName: "\u897F\u7EA2\u67FF"
-  isSlice: 0
+  isSlice: 1
   color: {r: 0.9450981, g: 0.058823533, b: 0.015686275, a: 1}
+  isCook: 0

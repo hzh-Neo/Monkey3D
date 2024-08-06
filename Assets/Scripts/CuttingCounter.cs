@@ -2,22 +2,12 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-// Custom attribute to mark fields as read-only
-public class UpdateProgress : EventArgs
-{
-    public float progress;
-}
 
-public class CuttingCounter : BaseCounter, IKitchenObjectParent
+
+public class CuttingCounter : ProgressCounter, IKitchenObjectParent
 {
+    public override event EventHandler<UpdateProgress> handleUpdateProgress;
     private Animator anim;
-    public event EventHandler<UpdateProgress> handleUpdateProgress;
-    private float cutProgress = 0;
-    private float maxProgress = 100;
-    public Color foodColor = new Color(255, 214, 92, 255);
-    private bool isCutting;
-    private KitchenItem food;
-    private bool isCoroutineRunning = false;
 
     private void Awake()
     {
@@ -26,7 +16,7 @@ public class CuttingCounter : BaseCounter, IKitchenObjectParent
 
     public override void interace(Player player)
     {
-        if (isCutting)
+        if (isDoing)
         {
             stopCutFood();
             return;
@@ -56,17 +46,17 @@ public class CuttingCounter : BaseCounter, IKitchenObjectParent
 
     private void Update()
     {
-        if (isCutting)
+        if (isDoing)
         {
             if (!isCoroutineRunning)
             {
                 StartCoroutine(incubeProgress());
             }
 
-            if (cutProgress >= GameData.Instance.maxCutProgress)
+            if (progress >= GameData.Instance.maxCutProgress)
             {
-                isCutting = false;
-                cutProgress = 0;
+                isDoing = false;
+                progress = 0;
                 if (food != null && food.getItemSlice() != null)
                 {
                     endCutFood(food.getItemSlice());
@@ -78,24 +68,25 @@ public class CuttingCounter : BaseCounter, IKitchenObjectParent
     private IEnumerator incubeProgress()
     {
         isCoroutineRunning = true;
-        cutProgress += GameData.Instance.cutSpeed;
+        progress += GameData.Instance.cutSpeed;
         yield return new WaitForSeconds(0.03f);
-        handleUpdateProgress.Invoke(this, new UpdateProgress() { progress = cutProgress / maxProgress });
+       
+        handleUpdateProgress.Invoke(this, new UpdateProgress() { progress = progress / GameData.Instance.maxCutProgress });
         isCoroutineRunning = false;
     }
 
     private void stopCutFood()
     {
-        isCutting = false;
-        cutProgress = 0;
+        isDoing = false;
+        progress = 0;
         endCutFood(food.getItem());
-        handleUpdateProgress.Invoke(this, new UpdateProgress() { progress = cutProgress / maxProgress });
+        handleUpdateProgress.Invoke(this, new UpdateProgress() { progress = progress / GameData.Instance.maxCutProgress });
     }
 
     private void startCutFood()
     {
-        isCutting = true;
-        cutProgress = 0;
+        isDoing = true;
+        progress = 0;
         //food.Hide();
         setItem(food);
         food.setClearCounter(this);

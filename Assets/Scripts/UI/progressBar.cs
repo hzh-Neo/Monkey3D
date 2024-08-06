@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class progressBar : MonoBehaviour
 {
-    [SerializeField] private CuttingCounter cuttingCounter;
+    [SerializeField] private ProgressCounter cuttingCounter;
     [SerializeField] private CanvasGroup cg;
     private float durationTime;
     private Image image;
@@ -41,7 +41,6 @@ public class progressBar : MonoBehaviour
 
     private void Show()
     {
-        Debug.Log(cuttingCounter.foodColor);
         image.color = cuttingCounter.foodColor;
         IsShow = true;
         

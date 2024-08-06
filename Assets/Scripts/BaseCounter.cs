@@ -8,6 +8,7 @@ public enum CounterType
     contaionCounter,
     cuttingCounter,
     trashCounter,
+    cookCounter,
     NoSet
 }
 

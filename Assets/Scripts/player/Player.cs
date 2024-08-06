@@ -149,14 +149,14 @@ public class Player : MonoBehaviour, IKitchenObjectParent
 
         if (hit)
         {
-    
+
             if (raycastHit.transform.TryGetComponent<BaseCounter>(out BaseCounter cc))
             {
                 if (selectCC == null || selectCC != cc)
                 {
                     if (HasItem())
                     {
-                      
+
                         if (cc.getCounterType() == CounterType.clearCounter)
                         {
                             if (!cc.HasItem())
@@ -167,7 +167,7 @@ public class Player : MonoBehaviour, IKitchenObjectParent
                         }
                         else if (cc.getCounterType() == CounterType.cuttingCounter)
                         {
-                            if (!getItem().IsSlice() && !cc.HasItem())
+                            if (getItem().kitchenObject.prefabSlice != null && getItem().kitchenObject.isSlice && !cc.HasItem())
                             {
                                 selectCC = cc;
                             }
@@ -175,9 +175,21 @@ public class Player : MonoBehaviour, IKitchenObjectParent
                             {
                                 selectCC = null;
                             }
-                        }else if (cc.getCounterType() == CounterType.trashCounter)
+                        }
+                        else if (cc.getCounterType() == CounterType.trashCounter)
                         {
                             selectCC = cc;
+                        }
+                        else if (cc.getCounterType() == CounterType.cookCounter)
+                        {
+                            if (getItem().kitchenObject.prefabSlice != null && getItem().kitchenObject.isCook && !cc.HasItem())
+                            {
+                                selectCC = cc;
+                            }
+                            else
+                            {
+                                selectCC = null;
+                            }
                         }
                         else
                         {
@@ -195,6 +207,10 @@ public class Player : MonoBehaviour, IKitchenObjectParent
                             selectCC = cc;
                         }
                         else if (cc.getCounterType() == CounterType.cuttingCounter && cc.HasItem())
+                        {
+                            selectCC = cc;
+                        }
+                        else if (cc.getCounterType() == CounterType.cookCounter && cc.HasItem())
                         {
                             selectCC = cc;
                         }
